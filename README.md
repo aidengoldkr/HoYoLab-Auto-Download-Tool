@@ -31,3 +31,31 @@ HoyoLab Auto Image Downloader는 호요랩 이미지 게시글의 모든 이미�
 ## 연락처
 - GitHub: [Aidengoldkr](https://github.com/Aidengoldkr)
 
+## Introduction
+HoyoLab Auto Image Downloader is a tool that allows you to download all images in a HoyoLab image post at once by clicking on them.
+
+## Features
+- Download images from HoyoLab posts all at once
+- Intuitive user interface
+- Multilingual support (English, Korean, Chinese)
+
+## Installation Instructions
+1. Go to the `dist` folder of this repository.
+2. Download the `HoyoLab Auto Image Downloader.exe`.
+3. Run the `HoyoLab Auto Image Downloader.exe` file to start the program.
+
+## How to Use
+1. Enter the folder path where you want to save the downloaded images.
+2. Enter the URL of the HoyoLab post you want to download.
+3. Click the "Download" button to download the images.
+
+## Notes
+- You may encounter a 'Windows PC protection' warning when running the program; please click on "More info" and then "Run anyway."
+- It is normal for there to be no response after clicking the download button. Please wait for a moment.
+- The URL format must be in the format `https://www.hoyolab.com/article/'unique number'`.
+
+## License
+This project is distributed under the MIT License. For more details, please refer to the `LICENSE` file.
+
+## Contact
+- GitHub: [Aidengoldkr](https://github.com/Aidengoldkr)
