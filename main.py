@@ -1,11 +1,27 @@
+import os
+import sys
 import json
 import tkinter as tk
 import tkinter.messagebox as messagebox
 from download import download_imgs
 import webbrowser
 
-with open("text.json", "r", encoding="utf-8") as file:
-    text_data = json.load(file)
+# 실행 파일이 있는 디렉토리 찾기
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS  # PyInstaller 환경
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # 일반 실행 환경
+
+# text.json 경로 설정
+JSON_PATH = os.path.join(BASE_DIR, "text.json")
+
+# JSON 파일 읽기
+try:
+    with open(JSON_PATH, "r", encoding="utf-8") as file:
+        text_data = json.load(file)
+except FileNotFoundError:
+    messagebox.showerror("ERROR", "text.json 파일을 찾을 수 없습니다!")
+    sys.exit(1)
 
 window = tk.Tk()
 
@@ -27,8 +43,8 @@ def on_focus_out(default_text, entry):
         entry.config(fg="gray") 
 
 def on_button_click():
-    folder_path = entry_1.get()  # 폴더 경로 가져오기
-    url = entry_2.get()  # URL 가져오기
+    folder_path = entry_1.get()  
+    url = entry_2.get()  
 
     if folder_path == "" or folder_path == text_data[lang]["folder_index"]:
         messagebox.showerror("ERROR", text_data[lang]["folder_error_message"])
@@ -47,9 +63,7 @@ def on_button_click():
 def change_language(new_lang):
     global lang
     lang = new_lang
-    # 언어 변경 후, 텍스트 갱신
     label.config(text=text_data[lang]["title"])
-    # caution_label.config(text=text_data[lang]["caution"])
     step_label_1.config(text="STEP 1")
     step_label_2.config(text="STEP 2")
     step_label_3.config(text="STEP 3")
@@ -63,6 +77,11 @@ def change_language(new_lang):
 window.title(text_data["EN"]["title"])
 window.geometry(f"600x300+{screen_width//2-300}+{screen_height//2-150}")
 window.resizable(False, False)
+
+# 아이콘 설정
+ICON_PATH = os.path.join(BASE_DIR, "icon.ico")
+if os.path.exists(ICON_PATH):
+    window.iconbitmap(ICON_PATH)
 
 label = tk.Label(window, text=text_data[lang]["title"], font=("Noto Sans", 15, "bold"), pady=10)
 label.pack()
@@ -94,24 +113,17 @@ entry_2.pack(side="left")
 text_label_2 = tk.Label(window, text=text_data[lang]["url_index_description"], font=("Noto Sans", 8))
 text_label_2.pack(anchor="w", padx=85, pady=(3))
 
-# frame_3 수정: STEP 3과 버튼을 같은 행에 배치
 frame_3 = tk.Frame(window)
 frame_3.pack(padx=20, pady=(10, 0))
 
-# STEP 3을 버튼 왼쪽에 배치
 step_label_3 = tk.Label(frame_3, text="STEP 3", font=("Noto Sans", 8, 'bold'))
-step_label_3.grid(row=0, column=0, padx=10, pady=5, sticky="w")  # STEP 3을 왼쪽에 배치
+step_label_3.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-# 버튼 생성 부분 수정
 download_button = tk.Button(frame_3, text="Download", font=("Noto Sans", 10, 'bold'), command=on_button_click, fg='green')
-download_button.grid(row=0, column=1, pady=10, padx=10)  # 버튼을 STEP 3 옆에 배치
+download_button.grid(row=0, column=1, pady=10, padx=10)
 
-# caution_label = tk.Label(window, text=text_data[lang]["caution"], font=("Noto Sans", 8),fg='red', anchor="e")
-# caution_label.pack()
-
-# 언어 변경 버튼 (맨 아래에 배치, 왼쪽 정렬)
 language_frame = tk.Frame(window)
-language_frame.pack(side="bottom", pady=10, anchor="w")  # 왼쪽 정렬되도록 설정
+language_frame.pack(side="bottom", pady=10, anchor="w")
 
 languages_label = tk.Label(language_frame, text="Languages:", font=("Noto Sans", 8, 'bold'))
 languages_label.pack(side="left", padx=10)
@@ -132,8 +144,8 @@ github_link = tk.Label(language_frame, text="Aidengoldkr", fg="blue", cursor="ha
 github_link.pack(side="left", padx=(0.1,0))
 github_link.bind("<Button-1>", open_github)
 
-frame_3.grid_rowconfigure(0, weight=1)  # 첫 번째 행에 확장 비율 설정
-frame_3.grid_rowconfigure(1, weight=1)  # 두 번째 행에 확장 비율 설정
-frame_3.grid_columnconfigure(0, weight=1)  # 첫 번째 열에 확장 비율 설정
+frame_3.grid_rowconfigure(0, weight=1)
+frame_3.grid_rowconfigure(1, weight=1)
+frame_3.grid_columnconfigure(0, weight=1)
 
 window.mainloop()
